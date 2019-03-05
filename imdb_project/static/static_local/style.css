@@ -1,0 +1,17 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+img{
+  height: 50px;
+  weight: 50px;
+}
+
+#id_username{
+  
+}
+
+.base{
+  margin-left: 50px;
+}
