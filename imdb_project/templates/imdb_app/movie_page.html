@@ -5,7 +5,7 @@
 {% block content %}
 <h1><b>Movie</b></h1><hr>
 {% for movie in movie_list %}
-  <li>{{ movie }}</li>
+  <li><a href={% url 'imdb_app:movie_detail' movie.id %}>{{ movie }}</a></li>
 {% endfor %}
   <div class="row">
     <div class="col-sm-12 mt-4">
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div id=Mymodal class="modal fade" role="dialog">
       <div class="modal-dialog">

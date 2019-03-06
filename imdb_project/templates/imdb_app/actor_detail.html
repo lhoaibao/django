@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ actor }}{% endblock %}
+
+{% block content %}
+
+<div class="actor">
+  <img class="actor-image" src="{{ actor.image }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
+  <div class="actor-information">
+    {% for name, value in actor.get_fields %}
+      {% if value and name != 'image' %}
+        <li>{{ name }}: {{ value }}</li>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
