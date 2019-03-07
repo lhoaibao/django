@@ -13,14 +13,27 @@ class SignUp(generic.CreateView):
 
 
 "-------------------------Movie-------------------------------------"
-class MovieView(generic.CreateView):
+class MovieCreateView(generic.CreateView):
     form_class = PostMovieForm
     template_name = 'imdb_app/movie_page.html'
     success_url = reverse_lazy('imdb_app:movie')
 
     def get_context_data(self, **kwargs):
         kwargs['movie_list'] = Movie.objects.all()
-        return super(MovieView, self).get_context_data(**kwargs)
+        return super(MovieCreateView, self).get_context_data(**kwargs)
+
+
+class MovieDeleteView(generic.DeleteView):
+    queryset = Movie.objects.all()
+    template_name = 'imdb_app/delete.html'
+    success_url = reverse_lazy('imdb_app:movie')
+
+
+class MovieEditView(generic.UpdateView):
+    form_class = PostMovieForm
+    queryset = Movie.objects.all()
+    template_name = 'imdb_app/edit.html'
+    success_url = reverse_lazy('imdb_app:movie')
 
 
 class MovieDetailView(generic.DetailView):
@@ -32,14 +45,27 @@ class MovieDetailView(generic.DetailView):
 
 
 "-------------------------Actor-------------------------------------"
-class ActorView(generic.CreateView):
+class ActorCreateView(generic.CreateView):
     form_class = PostActorForm
     template_name = 'imdb_app/actor_page.html'
     success_url = reverse_lazy('imdb_app:actor')
 
     def get_context_data(self, **kwargs):
         kwargs['actor_list'] = Actor.objects.all()
-        return super(ActorView, self).get_context_data(**kwargs)
+        return super(ActorCreateView, self).get_context_data(**kwargs)
+
+
+class ActorDeleteView(generic.DeleteView):
+    queryset = Actor.objects.all()
+    template_name = 'imdb_app/delete.html'
+    success_url = reverse_lazy('imdb_app:actor')
+
+
+class ActorEditView(generic.UpdateView):
+    form_class = PostActorForm
+    queryset = Actor.objects.all()
+    template_name = 'imdb_app/edit.html'
+    success_url = reverse_lazy('imdb_app:actor')
 
 
 class ActorDetailView(generic.DetailView):
@@ -51,7 +77,7 @@ class ActorDetailView(generic.DetailView):
 
 
 "-------------------------Award-------------------------------------"
-class AwardView(generic.CreateView):
+class AwardCreateView(generic.CreateView):
     template_name = 'imdb_app/award_page.html'
     form_class = PostAwardForm
 

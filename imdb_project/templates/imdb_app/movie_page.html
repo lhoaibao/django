@@ -4,9 +4,27 @@
 
 {% block content %}
 <h1><b>Movie</b></h1><hr>
-{% for movie in movie_list %}
-  <li><a href={% url 'imdb_app:movie_detail' movie.id %}>{{ movie }}</a></li>
-{% endfor %}
+<table border="1">
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>View</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    </tr>
+</thead>
+<tbody>
+    {% for movie in movie_list %}
+    <tr>
+    <td>{{ movie.title }}</td>
+    <td><a href={% url 'imdb_app:movie_detail' movie.id %}>view</a></td>
+    <td><a href={% url 'imdb_app:movie_edit' movie.id %}>edit</a></td>
+    <td><a href={% url 'imdb_app:movie_delete' movie.id %}>delete</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
   <div class="row">
     <div class="col-sm-12 mt-4">
       <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Mymodal">Create</button>

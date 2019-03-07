@@ -4,9 +4,26 @@
 
 {% block content %}
 <h1><b>Actor</b></h1><hr>
-{% for actor in actor_list %}
-  <li><a href={% url 'imdb_app:actor_detail' actor.id %}>{{ actor }}</a></li>
-{% endfor %}
+<table border="1">
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>View</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    </tr>
+</thead>
+<tbody>
+    {% for actor in actor_list %}
+    <tr>
+    <td>{{ actor.first_name }} {{actor.last_name}}</td>
+    <td><a href={% url 'imdb_app:actor_detail' actor.id %}>view</a></td>
+    <td><a href={% url 'imdb_app:actor_edit' actor.id %}>edit</a></td>
+    <td><a href={% url 'imdb_app:actor_delete' actor.id %}>delete</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
 <div class="row">
   <div class="col-sm-12 mt-4">
     <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Mymodal">Create</button>
