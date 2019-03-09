@@ -37,11 +37,7 @@ class MovieEditView(generic.UpdateView):
 
 
 class MovieDetailView(generic.DetailView):
-    queryset = Movie.objects.all()
-
-    def get_object(self):
-        obj = super().get_object()
-        return obj
+    model = Movie
 
 
 "-------------------------Actor-------------------------------------"
@@ -69,11 +65,7 @@ class ActorEditView(generic.UpdateView):
 
 
 class ActorDetailView(generic.DetailView):
-    queryset = Actor.objects.all()
-
-    def get_object(self):
-        obj = super().get_object()
-        return obj
+    model = Actor
 
 
 "-------------------------Award-------------------------------------"
