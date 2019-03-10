@@ -1,6 +1,74 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+'------------------model Category------------------------'
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+'------------------model movie-----------------------------'
+class MovieComment(models.Model):
+    author = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)
+    comment_text = models.TextField()
+    create = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    comments = models.ForeignKey(
+        Movie,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.author.username
+
+
+class Movie(models.Model):
+    title = models.CharField(max_length=200, blank=False)
+    description = models.TextField(blank=False)
+    release_date = models.DateField(blank=False)
+    category = models.ManyToManyField(
+        Category,
+        blank=False
+    )
+    image = models.CharField(max_length=500, blank=True)
+    actors = models.ManyToManyField(
+        Actor,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Movie._meta.fields]
+
+
+'---------------------------model actor----------------------------'
+class ActorComment(models.Model):
+    author = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)
+    comment_text = models.TextField()
+    create = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    comments = models.ForeignKey(
+        Actor,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.author.username
+
+
 class Actor(models.Model):
     MALE = 'MALE'
     FEMALE = 'FEMALE'
@@ -38,63 +106,21 @@ class Actor(models.Model):
     def get_name(self):
         return self.first_name + ' ' + self.last_name
 
-class Movie(models.Model):
-    COMEDY = 'COMEDY'
-    SCIFI = 'SCI-FI'
-    HORROR = 'HORROR'
-    ROMANCE = 'ROMANCE'
-    ACTION = 'ACTION'
-    THIRLLER = 'THRILLER'
-    DRAMA = 'DRAMA'
-    MYSTERY = 'MYSTERY'
-    CRIME = 'CRIME'
-    ANIMATION = 'ANIMATION'
-    ADVENTURE = 'ADVENTURE'
-    FANTASY = 'FANTASY'
-    COMEDYROMANCE = 'COMEDY-ROMANCE'
-    ACTIONCOMEDY = 'ACTION-COMEDY'
-    SUPERHERO = 'SUPERHERO'
 
-    categories_choices = [
-        (COMEDY, COMEDY.capitalize()),
-        (SCIFI, SCIFI.capitalize()),
-        (HORROR, HORROR.capitalize()),
-        (ROMANCE, ROMANCE.capitalize()),
-        (ACTION, ACTION.capitalize()),
-        (THIRLLER, THIRLLER.capitalize()),
-        (DRAMA, DRAMA.capitalize()),
-        (MYSTERY, MYSTERY.capitalize()),
-        (CRIME, CRIME.capitalize()),
-        (ANIMATION, ANIMATION.capitalize()),
-        (ADVENTURE, ADVENTURE.capitalize()),
-        (FANTASY, FANTASY.capitalize()),
-        (COMEDYROMANCE, COMEDYROMANCE.capitalize()),
-        (ACTIONCOMEDY, ACTIONCOMEDY.capitalize()),
-        (SUPERHERO, SUPERHERO.capitalize()),
-    ]
+'---------------------------model award--------------------------'
+class AwardComment(models.Model):
+    author = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)
+    comment_text = models.TextField()
+    create = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
 
-    title = models.CharField(max_length=200, blank=False)
-    description = models.TextField(blank=False)
-    release_date = models.DateField(blank=False)
-    category = models.CharField(
-        max_length=200,
-        choices=categories_choices,
-        blank=False
+    comments = models.ForeignKey(
+        Award,
+        on_delete=models.CASCADE,
     )
-    image = models.CharField(max_length=500, blank=True)
-    actors = models.ManyToManyField(
-        Actor,
-        blank=True,
-    )
-
-    class Meta:
-        ordering = ["title"]
 
     def __str__(self):
-        return self.title
-
-    def get_fields(self):
-        return [(field.name, field.value_to_string(self)) for field in Movie._meta.fields]
+        return self.author.username
 
 
 class Award(models.Model):
