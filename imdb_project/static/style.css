@@ -3,15 +3,56 @@
   padding: 0;
 }
 
-img{
+img {
   height: 50px;
   weight: 50px;
 }
 
-#id_username{
-  
+.navbar-brand b {
+  color: #fff;
+  font-family: 'Source Code Pro', monospace;
 }
 
-.base{
-  margin-left: 50px;
+.nav-link b {
+  color: #abb7c4;
+}
+
+.nav-link:hover b {
+  color: rgb(220, 248, 54);
+}
+
+body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#login-error {
+  color: red;
+  text-align: center;
+}
+
+.container-background {
+  background-color: #fff;
+  z-index: 5;
+}
+
+.title {
+    margin-top: 20px;
+}
+
+#add-button {
+  float: right;
+}
+
+.movie-image {
+  width: 214px;
+  height: 317px;
+}
+
+#movie-poster {
+  padding-right: 500px;
+}
+
+.page-navigator {
+  text-align: center;
 }

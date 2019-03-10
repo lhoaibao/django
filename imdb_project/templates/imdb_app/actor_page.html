@@ -3,7 +3,12 @@
 {% block title %}Movie{% endblock %}
 
 {% block content %}
-<h1><b>Actor</b></h1><hr>
+<h1 title="title">
+  <b>Actor</b>
+  <span id="add-button">
+    <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
+  </span>
+</h1><hr>
 <table border="1">
 <tbody>
     {% for actor in actor_list %}
@@ -20,7 +25,7 @@
     <form method="post" action={% url "imdb_app:actor_delete" actor.id %}>
       {% csrf_token %}
       <div id=Deletemodal class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Delete Actor</h5>
@@ -40,15 +45,10 @@
     {% endfor %}
 </tbody>
 </table>
-<div class="row">
-  <div class="col-sm-12 mt-4">
-    <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Mymodal">Create</button>
-  </div>
-</div>
-<form method="post" enctype="multipart/form-data">
+<form method="post" action='{% url "imdb_app:actor_create"%}' enctype="multipart/form-data">
   {% csrf_token %}
   <div id=Mymodal class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Create Actor</h5>
@@ -64,4 +64,18 @@
     </div>
   </div>
 </form>
+<hr>
+<div class="page-navigator">
+  {% if page_obj.has_other_pages %}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.paginator.page_range.0 }}"> << </a>
+      <a href="?page={{ page_obj.previous_page_number }}"> <  </a>
+    {% endif %}
+    {{ page_obj.number }}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"> > </a>
+      <a href="?page={{ page_obj.paginator.num_pages }}"> >> </a>
+    {% endif %}
+  {% endif %}
+</div>
 {% endblock %}
