@@ -8,6 +8,7 @@ import datetime
 
 class PostMovieForm(forms.ModelForm):
     release_date = DateField(widget=forms.SelectDateWidget(years=range(datetime.date.today().year, 1800, -1)))
+
     class Meta:
         model = Movie
         fields = '__all__'

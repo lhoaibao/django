@@ -5,22 +5,38 @@
 {% block content %}
 <h1><b>Actor</b></h1><hr>
 <table border="1">
-<thead>
-    <tr>
-    <th>Name</th>
-    <th>View</th>
-    <th>Edit</th>
-    <th>Delete</th>
-    </tr>
-</thead>
 <tbody>
     {% for actor in actor_list %}
     <tr>
-    <td>{{ actor.first_name }} {{actor.last_name}}</td>
-    <td><a href={% url 'imdb_app:actor_detail' actor.id %}>view</a></td>
-    <td><a href={% url 'imdb_app:actor_edit' actor.id %}>edit</a></td>
-    <td><a href={% url 'imdb_app:actor_delete' actor.id %}>delete</a></td>
+      <td>{{ actor.first_name }} {{actor.last_name}}</td>
+      <td><a href={% url 'imdb_app:actor_detail' actor.id %} class="btn btn-dark btn-outline-danger">view</a></td>
+      <td><a href={% url 'imdb_app:actor_edit' actor.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
+      <td>
+        <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">
+          Delete
+        </button>
+      <td>
     </tr>
+    <form method="post" action={% url "imdb_app:actor_delete" actor.id %}>
+      {% csrf_token %}
+      <div id=Deletemodal class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Actor</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete "{{ actor.first_name }} {{ actor.last_name }}"?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+              <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
     {% endfor %}
 </tbody>
 </table>

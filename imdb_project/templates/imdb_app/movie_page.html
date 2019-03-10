@@ -5,45 +5,37 @@
 {% block content %}
 <h1><b>Movie</b></h1><hr>
 <table border="1">
-<thead>
-    <tr>
-    <th>Name</th>
-    <th>View</th>
-    <th>Edit</th>
-    <th>Delete</th>
-    </tr>
-</thead>
 <tbody>
     {% for movie in movie_list %}
     <tr>
     <td>{{ movie.title }}</td>
-    <td><a href={% url 'imdb_app:movie_detail' movie.id %}>view</a></td>
-    <td><a href={% url 'imdb_app:movie_edit' movie.id %}>edit</a></td>
+    <td><a href={% url 'imdb_app:movie_detail' movie.id %} class="btn btn-dark btn-outline-danger">view</a></td>
+    <td><a href={% url 'imdb_app:movie_edit' movie.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
     <td><button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">Delete</button><td>
     </tr>
 
 
 
-  <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
-    {% csrf_token %}
-    <div id=Deletemodal class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Create Movie</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete "{{ movie }}"?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
-            <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+    <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
+      {% csrf_token %}
+      <div id=Deletemodal class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Movie</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete "{{ movie }}"?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+              <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
 
 
   {% endfor %}
