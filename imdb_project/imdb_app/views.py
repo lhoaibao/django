@@ -32,6 +32,10 @@ class MovieCreateView(generic.CreateView):
     form_class = PostMovieForm
     success_url = reverse_lazy('imdb_app:movie')
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(MovieCreateView, self).form_valid(form)
+
 
 class MovieDetailView(generic.DetailView):
     model = Movie
@@ -67,6 +71,10 @@ class ActorListView(generic.ListView):
 class ActorCreateView(generic.CreateView):
     form_class = PostActorForm
     success_url = reverse_lazy('imdb_app:actor')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(ActorCreateView, self).form_valid(form)
 
 
 class ActorDetailView(generic.DetailView):

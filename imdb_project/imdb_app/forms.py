@@ -11,17 +11,17 @@ class PostMovieForm(forms.ModelForm):
 
     class Meta:
         model = Movie
-        fields = '__all__'
+        exclude = ('author',)
 
 
 class PostActorForm(forms.ModelForm):
     birthdate = DateField(widget=forms.SelectDateWidget(years=range(datetime.date.today().year, 1800, -1)))
     class Meta:
         model = Actor
-        fields = '__all__'
+        exclude = ('author',)
 
 
 class PostAwardForm(forms.ModelForm):
     class Meta:
         model = Award
-        fields = '__all__'
+        exclude = ('author',)

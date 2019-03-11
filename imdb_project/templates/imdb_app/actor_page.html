@@ -15,12 +15,10 @@
     <tr>
       <td>{{ actor.first_name }} {{actor.last_name}}</td>
       <td><a href={% url 'imdb_app:actor_detail' actor.id %} class="btn btn-dark btn-outline-danger">view</a></td>
+      {% if user.is_superuser or user.is_staff or user.username == movie.author %}
       <td><a href={% url 'imdb_app:actor_edit' actor.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
-      <td>
-        <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">
-          Delete
-        </button>
-      <td>
+      <td><button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">Delete</button><td>
+      {% endif %}
     </tr>
     <form method="post" action={% url "imdb_app:actor_delete" actor.id %}>
       {% csrf_token %}
@@ -47,9 +45,9 @@
     {% endfor %}
 </tbody>
 </table>
-<form method="post" action='{% url "imdb_app:actor_create"%}' enctype="multipart/form-data">
+<form method="post" action='{% url "imdb_app:actor_create" %}' enctype="multipart/form-data">
   {% csrf_token %}
-  <div id=Mymodal class="modal fade" role="dialog">
+  <div id=Createmodal class="modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

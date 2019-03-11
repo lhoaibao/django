@@ -15,8 +15,10 @@
     <tr>
     <td>{{ movie.title }}</td>
     <td><a href={% url 'imdb_app:movie_detail' movie.id %} class="btn btn-dark btn-outline-danger">view</a></td>
+    {% if user.is_superuser or user.is_staff or user.username == movie.author%}
     <td><a href={% url 'imdb_app:movie_edit' movie.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
     <td><button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">Delete</button><td>
+    {% endif %}
     </tr>
     <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
       {% csrf_token %}
