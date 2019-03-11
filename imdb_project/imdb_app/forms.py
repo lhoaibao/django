@@ -1,7 +1,5 @@
 from django import forms
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
-from .models import Movie, Actor, Award
-from django.contrib.admin.widgets import FilteredSelectMultiple
+from .models import Movie, Actor, Award, User
 from django.forms.fields import DateField
 from django.contrib.auth.forms import UserCreationForm
 import datetime
