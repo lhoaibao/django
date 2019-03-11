@@ -53,6 +53,33 @@ body {
   padding-right: 500px;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 10px;
+  padding: 10px;
+  justify-items:center;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 50px 0;
+  font-size: 30px;
+
+}
+
+.movie {
+  background-size: cover;
+  width:214px;
+  height:317px;
+
+}
+
+.item {
+  width:214px;
+  height:450px;
+}
+
 .page-navigator {
   text-align: center;
 }
