@@ -2,14 +2,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.urls import reverse_lazy
 from .models import Movie, Actor, Award
-from .forms import PostMovieForm, PostActorForm, PostAwardForm
+from .forms import PostMovieForm, PostActorForm, PostAwardForm, SignUpForm
 
 
 "-------------------------Sign Up-------------------------------------"
 
 
 class SignUp(generic.CreateView):
-    form_class = UserCreationForm
+    form_class = SignUpForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
