@@ -3,7 +3,18 @@ from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 from .models import Movie, Actor, Award
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.forms.fields import DateField
+from django.contrib.auth.forms import UserCreationForm
 import datetime
+
+
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'avatar')
 
 
 class PostMovieForm(forms.ModelForm):
