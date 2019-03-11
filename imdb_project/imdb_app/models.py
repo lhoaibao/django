@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     avatar = models.ImageField(upload_to='photos/', blank=True)
 
-    
+
 class Comment(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -57,7 +57,7 @@ class Actor(models.Model):
         choices=nationalities_choices,
         blank=False
     )
-    image = models.CharField(max_length=500, blank=True)
+    image = models.ImageField(upload_to='photos/')
     is_alive = models.BooleanField(default=True)
 
     class Meta:
@@ -83,7 +83,7 @@ class Movie(models.Model):
         Category,
         blank=False
     )
-    image = models.CharField(max_length=500, blank=True)
+    image = models.ImageField(upload_to='photos/')
     actors = models.ManyToManyField(
         Actor,
         blank=True,
