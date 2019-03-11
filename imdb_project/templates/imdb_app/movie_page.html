@@ -3,46 +3,48 @@
 {% block title %}Movie{% endblock %}
 
 {% block content %}
+
 <h1 title="title">
   <b>Movie</b>
   <span id="add-button">
     <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
   </span>
 </h1><hr>
-<table border="1">
-<tbody>
+<div class="grid-container">
     {% for movie in movie_list %}
-    <tr>
-    <td>{{ movie.title }}</td>
-    <td><a href={% url 'imdb_app:movie_detail' movie.id %} class="btn btn-dark btn-outline-danger">view</a></td>
-    {% if user.is_superuser or user.is_staff or user.username == movie.author%}
-    <td><a href={% url 'imdb_app:movie_edit' movie.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
-    <td><button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">Delete</button><td>
-    {% endif %}
-    </tr>
-    <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
-      {% csrf_token %}
-      <div id=Deletemodal class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete Movie</h5>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to delete "{{ movie }}"?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
-              <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+    <div class="item item{{forloop.counter}}">
+        <div class="movie" style="background-image: url('{{movie.image.url}}');">
+          <a href={% url 'imdb_app:movie_detail' movie.id %} class="btn btn-dark btn-outline-danger">view</a>
+          <a href={% url 'imdb_app:movie_edit' movie.id %} class="btn btn-dark btn-outline-danger">edit</a>
+          <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+        </div>
+        {{ movie.title }}
+
+      <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
+        {% csrf_token %}
+        <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete Movie</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to delete "{{ movie }}"?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   {% empty %}
     No movies yet.
   {% endfor %}
+  </div>
 </tbody>
 </table>
 
