@@ -37,3 +37,8 @@ class PostAwardForm(forms.ModelForm):
     class Meta:
         model = Award
         exclude = ('author', 'content_type', 'object_id')
+    
+class PostCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment_text',)
