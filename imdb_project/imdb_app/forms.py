@@ -25,12 +25,15 @@ class PostMovieForm(forms.ModelForm):
 
 class PostActorForm(forms.ModelForm):
     birthdate = DateField(widget=forms.SelectDateWidget(years=range(datetime.date.today().year, 1800, -1)))
+
     class Meta:
         model = Actor
         exclude = ('author',)
 
 
 class PostAwardForm(forms.ModelForm):
+    date = DateField(widget=forms.SelectDateWidget(years=range(datetime.date.today().year, 1800, -1)))
+
     class Meta:
         model = Award
-        exclude = ('author',)
+        exclude = ('author', 'content_type', 'object_id')

@@ -97,9 +97,30 @@ class ActorDeleteView(generic.DeleteView):
 "-------------------------Award-------------------------------------"
 
 
-class AwardCreateView(generic.CreateView):
+class AwardListView(generic.ListView):
+    model = Award
+    context_object_name = 'award_list'
     template_name = 'imdb_app/award_page.html'
-    form_class = PostAwardForm
+    paginate_by = 12
 
-    def get_queryset(self):
-        return Award.objects.all()
+    def get_context_data(self, **kwargs):
+        kwargs['form'] = PostAwardForm()
+        kwargs['movie_list'] = Movie.objects.all()
+        kwargs['actor_list'] = Actor.objects.all()
+        return super(AwardListView, self).get_context_data(**kwargs)
+
+
+class AwardCreateView(generic.CreateView):
+    form_class = PostAwardForm
+    template_name = 'imdb_app/award_page.html'
+    success_url = reverse_lazy('imdb_app:award')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.object_id = self.request._post['selected']
+        try:
+            id = Award.objects.last().id
+        except AttributeError:
+            id = 1
+        form.instance.content_type_id = id
+        return super(AwardCreateView, self).form_valid(form)

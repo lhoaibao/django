@@ -6,17 +6,18 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to='photos/', blank=True)
+    avatar = models.ImageField(upload_to='media/avatars/', blank=True)
 
 
 class Comment(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_text = models.TextField()
     create = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return self.comment_text
@@ -27,10 +28,10 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = "categories"
 
     def __str__(self):
         return self.name
-
 
 
 '---------------------------model actor----------------------------'
@@ -57,7 +58,7 @@ class Actor(models.Model):
         choices=nationalities_choices,
         blank=False
     )
-    image = models.ImageField(upload_to='photos/')
+    image = models.ImageField(upload_to='media/actors/', blank=True)
     is_alive = models.BooleanField(default=True)
 
     class Meta:
@@ -83,12 +84,11 @@ class Movie(models.Model):
         Category,
         blank=False
     )
-    image = models.ImageField(upload_to='photos/')
+    image = models.ImageField(upload_to='media/movies/', blank=True)
     actors = models.ManyToManyField(
         Actor,
         blank=True,
     )
-
     comments = GenericRelation(Comment)
 
     class Meta:
@@ -100,24 +100,34 @@ class Movie(models.Model):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Movie._meta.fields]
 
+    def get_name(self):
+        return self.title
 
 '---------------------------model award--------------------------'
+
+
 class Award(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     kind_choices = [
-        ('MOVIE', 'Movie'),
-        ('ACTOR', 'Actor')
+        ('Movie', 'Movie'),
+        ('Actor', 'Actor')
     ]
+
+    date = models.DateField(blank=False)
     title = models.CharField(max_length=200, blank=False)
     kind = models.CharField(
         max_length=10,
         choices=kind_choices,
+        default='Movie',
         blank=False
     )
-    date = models.DateField(blank=False)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    selected = GenericForeignKey('content_type', 'object_id')
+    comments = GenericRelation(Comment)
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ["date"]
 
     def __str__(self):
         return self.title

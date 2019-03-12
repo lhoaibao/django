@@ -3,6 +3,86 @@
 {% block title %}Movie{% endblock %}
 
 {% block content %}
-<h1><b>Movie</b></h1><hr>
-<h1><b>Actor</b></h1><hr>
+<h1 class="title">
+  <b>Movie</b>
+  <span id="add-button">
+    <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
+  </span>
+</h1>
+<hr>
+{% for award in award_list %}
+  {% if award.kind == 'Movie' %}
+    {{ award }}
+  {% endif %}
+{% endfor %}
+<h1 class="title">
+  <b>Actor</b>
+</h1>
+<hr>
+{% for award in award_list %}
+  {% if award.kind == 'Actor' %}
+    {{ award }}
+  {% endif %}
+{% endfor %}
+
+<form class="award-create-form" action="{% url 'imdb_app:award_create' %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div id=Createmodal class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Award</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          {{ form.as_p }}
+          <label for="id_selected" id="label_id_selected">Movie:</label>
+          <select id='id_selected' name='selected' required>
+            {% for movie in movie_list %}
+              <option value="{{movie.id}}">
+                {{ movie }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark btn-outline-danger">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+  document.querySelector("#id_kind").addEventListener('change', function(){
+    var movieList = [{% for movie in movie_list %}["{{ movie.id }}", "{{ movie }}"], {% endfor %}]
+    var actorList = [{% for actor in actor_list %}["{{ actor.id }}", "{{ actor }}"], {% endfor %}]
+    var selectedMaterial = document.querySelector("#id_kind").value;
+    if (selectedMaterial == 'Movie') {
+      document.querySelector("#label_id_selected").innerHTML = 'Movie:';
+      createSelection(movieList, ".award-create-form", "#id_selected");
+    } else if (selectedMaterial == 'Actor') {
+      document.querySelector("#label_id_selected").innerHTML = 'Actor:';
+      createSelection(actorList, ".award-create-form", "#id_selected");
+    }
+  });
+
+  function get_select_tag(form, id_name){
+    var awardCreateForm = document.querySelector(form);
+    var selectList = document.querySelector(id_name);
+    selectList.innerHTML = "";
+    return selectList
+  };
+
+  function createSelection(objects, form, select_id) {
+    var selectList = get_select_tag(form, select_id)
+    for (var object of objects) {
+      console.log(object)
+      var option = document.createElement("option");
+      option.value = object[0];
+      option.text = object[1];
+      selectList.appendChild(option);
+    }
+  };
+</script>
 {% endblock %}
