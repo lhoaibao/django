@@ -3,7 +3,7 @@
 {% block title %}{{ movie }}{% endblock %}
 
 {% block content %}
-<div class="movie">
+<div class="movie-detail">
   <img class="movie-image" src="{{ movie.image }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
   <div class="movie-information">
     {% for name, value in movie.get_fields %}
@@ -11,9 +11,22 @@
         <li>{{ name }}: {{ value }}</li>
       {% endif %}
     {% endfor %}
+
+    {% for name in movie.actors.all %}
+      {{ name.get_name }}
+    {%endfor%}
+
   </div>
 </div>
-{% for name in movie.actors.all %}
-  {{ name.get_name }}
+<form method="post" action="{% url 'imdb_app:comment_create' movie.id %}">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="hidden" name="model" value="movie">
+  <input type="hidden" name="next" value="{{request.path}}">
+  <button type="submit" name="button">Submit</button>
+</form>
+{% for comment in comments %}
+<h1>{{comment}}</h1>
 {% endfor %}
+
 {% endblock %}
