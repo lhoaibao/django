@@ -3,6 +3,7 @@ from django.views import generic
 from django.urls import reverse_lazy
 from .models import Movie, Actor, Award
 from .forms import PostMovieForm, PostActorForm, PostAwardForm, SignUpForm
+from django.contrib.contenttypes.models import ContentType
 
 
 "-------------------------Sign Up-------------------------------------"
@@ -34,6 +35,8 @@ class MovieCreateView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        with open('test.txt', 'w+') as f:
+            f.write(str(self.request.__dict__))
         return super(MovieCreateView, self).form_valid(form)
 
 
@@ -90,7 +93,6 @@ class ActorEditView(generic.UpdateView):
 
 class ActorDeleteView(generic.DeleteView):
     queryset = Actor.objects.all()
-    template_name = 'imdb_app/delete.html'
     success_url = reverse_lazy('imdb_app:actor')
 
 
@@ -112,15 +114,11 @@ class AwardListView(generic.ListView):
 
 class AwardCreateView(generic.CreateView):
     form_class = PostAwardForm
-    template_name = 'imdb_app/award_page.html'
     success_url = reverse_lazy('imdb_app:award')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.object_id = self.request._post['selected']
-        try:
-            id = Award.objects.last().id
-        except AttributeError:
-            id = 1
-        form.instance.content_type_id = id
+        model = self.request._post['kind'].lower()
+        form.instance.content_type_id = ContentType.objects.get(model=model).id
         return super(AwardCreateView, self).form_valid(form)
