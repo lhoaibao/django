@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.urls import reverse_lazy
 from .models import Movie, Actor, Award
-from .forms import PostMovieForm, PostActorForm, PostAwardForm, SignUpForm
+from .forms import PostMovieForm, PostActorForm, PostAwardForm, SignUpForm, PostCommentForm
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -122,3 +122,17 @@ class AwardCreateView(generic.CreateView):
         model = self.request._post['kind'].lower()
         form.instance.content_type_id = ContentType.objects.get(model=model).id
         return super(AwardCreateView, self).form_valid(form)
+    
+class CommentCreateView(generic.CreateView):
+    form_class = PostCommentForm
+
+    def get_success_url(self):
+        redirect_to=self.request._post['next']
+        return redirect_to
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.object_id = self.request.resolver_match.kwargs['pk']
+        form.instance.content_type_id = ContentType.objects.get(model=self.request._post['model']).id
+
+        return super(CommentCreateView, self).form_valid(form)
