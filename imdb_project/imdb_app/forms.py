@@ -1,5 +1,5 @@
 from django import forms
-from .models import Movie, Actor, Award, User
+from .models import Movie, Actor, Award, User, Comment
 from django.forms.fields import DateField
 from django.contrib.auth.forms import UserCreationForm
 import datetime
@@ -37,7 +37,7 @@ class PostAwardForm(forms.ModelForm):
     class Meta:
         model = Award
         exclude = ('author', 'content_type', 'object_id')
-    
+
 class PostCommentForm(forms.ModelForm):
     class Meta:
         model = Comment

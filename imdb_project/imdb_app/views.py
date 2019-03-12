@@ -43,6 +43,12 @@ class MovieCreateView(generic.CreateView):
 class MovieDetailView(generic.DetailView):
     model = Movie
 
+    def get_context_data(self, **kwargs):
+        movie = Movie.objects.get(pk=self.kwargs['pk'])
+        kwargs['comments'] = movie.comments.all()
+        kwargs['form'] = PostCommentForm()
+        return super(MovieDetailView, self).get_context_data(**kwargs)
+
 
 class MovieEditView(generic.UpdateView):
     form_class = PostMovieForm
@@ -122,7 +128,7 @@ class AwardCreateView(generic.CreateView):
         model = self.request._post['kind'].lower()
         form.instance.content_type_id = ContentType.objects.get(model=model).id
         return super(AwardCreateView, self).form_valid(form)
-    
+
 class CommentCreateView(generic.CreateView):
     form_class = PostCommentForm
 

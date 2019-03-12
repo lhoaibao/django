@@ -15,6 +15,7 @@ urlpatterns = [
     path('award/create', login_required(views.AwardCreateView.as_view()), name='award_create'),
     path('movie/create', login_required(views.MovieCreateView.as_view()), name='movie_create'),
     path('actor/create', login_required(views.ActorCreateView.as_view()), name='actor_create'),
+    path('comment/<int:pk>/create', login_required(views.CommentCreateView.as_view()), name='comment_create'),
     path('movie/<int:pk>/delete', login_required(views.MovieDeleteView.as_view()), name='movie_delete'),
     path('actor/<int:pk>/delete', login_required(views.ActorDeleteView.as_view()), name='actor_delete'),
     path('movie/<int:pk>/update', login_required(views.MovieEditView.as_view()), name='movie_edit'),
