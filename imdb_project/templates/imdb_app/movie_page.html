@@ -4,21 +4,43 @@
 
 {% block content %}
 
-<h1 title="title">
+<h1 title="head-title">
   <b>Movie</b>
   <span id="add-button">
     <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
   </span>
 </h1><hr>
-<div class="grid-container">
+    <div class="container">
+    <div class="row">
     {% for movie in movie_list %}
+    <div class="col-sm">
     <div class="item item{{forloop.counter}}">
-        <div class="movie" style="background-image: url('{{movie.image.url}}');">
-          <a href={% url 'imdb_app:movie_detail' movie.id %} class="btn btn-dark btn-outline-danger">view</a>
-          <a href={% url 'imdb_app:movie_edit' movie.id %} class="btn btn-dark btn-outline-danger">edit</a>
-          <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+
+        <div class="object">
+          <img class="object-image" src="{{ movie.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width:214px; height:317px">
+          <div class="button-set">
+            {% if user.is_superuser or user.is_staff or user.username == movie.author.username and user.is_authenticated %}
+              <a href={% url 'imdb_app:movie_edit' movie.id %} class="edit-btn btn btn-dark btn-outline-danger">Edit</a>
+              <button type="button" class="delete-btn btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+            {% endif %}
+            <a class="title-link" href={% url 'imdb_app:movie_detail' movie.id %}>
+              <span class="title">
+                {% if movie.title|length > 25 %}
+                {{ movie.title|truncatechars:25 }}
+                {% else %}
+                {{ movie.title }}
+                {% endif %}
+                <br>
+                ({{ movie.release_date|date:"Y" }})
+              </span>
+            </a>
+          </div>
+
         </div>
-        {{ movie.title }}
+
+
+      </div>
+    </div>
 
       <form method="post" action='{% url "imdb_app:movie_delete" movie.id %}'>
         {% csrf_token %}
@@ -40,11 +62,12 @@
           </div>
         </div>
       </form>
-    </div>
+
   {% empty %}
     No movies yet.
   {% endfor %}
-  </div>
+</div>
+</div>
 </tbody>
 </table>
 

@@ -92,7 +92,7 @@ class Movie(models.Model):
     comments = GenericRelation(Comment)
 
     class Meta:
-        ordering = ["title"]
+        ordering = ["-id"]
 
     def __str__(self):
         return self.title

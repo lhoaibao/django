@@ -54,35 +54,7 @@
 </form>
 
 <script type="text/javascript">
-  document.querySelector("#id_kind").addEventListener('change', function(){
-    var movieList = [{% for movie in movie_list %}["{{ movie.id }}", "{{ movie }}"], {% endfor %}]
-    var actorList = [{% for actor in actor_list %}["{{ actor.id }}", "{{ actor }}"], {% endfor %}]
-    var selectedMaterial = document.querySelector("#id_kind").value;
-    if (selectedMaterial == 'Movie') {
-      document.querySelector("#label_id_selected").innerHTML = 'Movie:';
-      createSelection(movieList, ".award-create-form", "#id_selected");
-    } else if (selectedMaterial == 'Actor') {
-      document.querySelector("#label_id_selected").innerHTML = 'Actor:';
-      createSelection(actorList, ".award-create-form", "#id_selected");
-    }
-  });
-
-  function get_select_tag(form, id_name){
-    var awardCreateForm = document.querySelector(form);
-    var selectList = document.querySelector(id_name);
-    selectList.innerHTML = "";
-    return selectList
-  };
-
-  function createSelection(objects, form, select_id) {
-    var selectList = get_select_tag(form, select_id)
-    for (var object of objects) {
-      console.log(object)
-      var option = document.createElement("option");
-      option.value = object[0];
-      option.text = object[1];
-      selectList.appendChild(option);
-    }
-  };
+  var movieList = [{% for movie in movie_list %}["{{ movie.id }}", "{{ movie }}"], {% endfor %}]
+  var actorList = [{% for actor in actor_list %}["{{ actor.id }}", "{{ actor }}"], {% endfor %}]
 </script>
 {% endblock %}

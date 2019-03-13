@@ -1,85 +1,152 @@
-*{
-  margin: 0;
-  padding: 0;
+/* Set body background attribute */
+/* base.html */
+body {
+  background-attachment: fixed;
+  background-size: cover;
 }
 
-img {
-  height: 50px;
-  weight: 50px;
+
+/* Set background color of container to white */
+.page-background {
+  background-color: white;
 }
 
+
+/* Resize navigation bar logo */
+#logo {
+  height: 40px;
+  weight: 40px;
+}
+
+
+/* Change text next to logo */
 .navbar-brand b {
+  font-size: 15px;
   color: #fff;
   font-family: 'Source Code Pro', monospace;
 }
 
+
+/* Resize user dropdown menu */
+.dropdown-menu b {
+  font-size: 15px;
+}
+
+
+/* Change color user dropdown menu */
+.dropdown-menu b,
 .nav-link b {
   color: #abb7c4;
 }
 
+
+/* Change text color when hover to text in navigation bar */
+.dropdown-item:hover b,
 .nav-link:hover b {
   color: rgb(220, 248, 54);
 }
 
-body {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
 
-#login-error {
-  color: red;
-  text-align: center;
-}
-
-.container-background {
-  background-color: #fff;
-  z-index: 5;
-}
-
-.title {
-    margin-top: 20px;
-}
-
+/* Shift create button to the right of container */
+/* movie_page.html, actor_page.html, award_page.html */
 #add-button {
   float: right;
 }
 
-.movie-image {
+
+/* Adjust position for and center text for movie or acter */
+.object {
+  position:relative;
+  text-align: center;
+}
+
+
+/* Set the image size of movie poster or actor poster */
+/* movie_page.html, actor_page.html */
+.object-image {
   width: 214px;
   height: 317px;
 }
 
-#movie-poster {
-  padding-right: 500px;
-}
 
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 10px;
-  padding: 10px;
-  justify-items:center;
-}
-
-.grid-container > div {
+/* Adjust position of edit and delete button parent div */
+/* Hide the button-set */
+/* movie_page.html, actor_page.html */
+.object > .button-set {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  top:30%;
+  left: 15%;
   text-align: center;
-  padding: 50px 0;
-  font-size: 30px;
-
+  display: none;
 }
 
-.movie {
-  background-size: cover;
-  width:214px;
-  height:317px;
 
+/* Adjust position of edit button */
+/* movie_page.html, actor_page.html */
+.object .button-set .edit-btn {
+  position: absolute;
+  top: 145px;
+  left: 35px;
+  transform: translate(-50%, -50%);
 }
 
+
+/* Adjust position of delete button */
+/* movie_page.html, actor_page.html */
+.object .button-set .delete-btn {
+  position: absolute;
+  top: 145px;
+  left: 120px;
+  transform: translate(-50%, -50%);
+}
+
+
+/* If hover on movie or actor image => decrease opacity of the image */
+/* movie_page.html, actor_page.html */
+.object:hover > img {
+  opacity: 0.7;
+}
+
+
+/* If hover on image or button-set or title name, show button set */
+/* movie_page.html, actor_page.html */
+.object > img:hover + .button-set,
+.button-set:hover,
+.object  .button-set  .title-link
+{
+  display: inline-block;
+}
+
+
+/* Adjust title name div */
+/* movie_page.html, actor_page.html */
+.object  .button-set  .title-link {
+  position: absolute;
+  width: 214px;
+  height: 50px;
+  color: white;
+  font-weight: bold;
+  align-items: center;
+  top: 195px;
+  left: 75px;
+  transform: translate(-50%, -50%);
+  background-color: rgb(0, 0, 0, 0.8);
+}
+
+
+/* Adjust width and height of item div */
+/* movie_page.html, actor_page.html */
 .item {
-  width:214px;
-  height:450px;
+  width: 214px;
+  height: 400px;
+  margin-left: 55px;
 }
 
+
+/* Center page navigator */
+/* movie_page.html, actor_page.html */
 .page-navigator {
   text-align: center;
 }

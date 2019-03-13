@@ -1,57 +1,81 @@
 {% extends 'base.html' %}
 
-{% block title %}Movie{% endblock %}
+{% block title %}Actor{% endblock %}
 
 {% block content %}
-<h1 title="title">
+
+<h1 title="head-title">
   <b>Actor</b>
   <span id="add-button">
     <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
   </span>
 </h1><hr>
-<table border="1">
-<tbody>
+  <div class="container">
+    <div class="row">
     {% for actor in actor_list %}
-    <tr>
-      <td>{{ actor.first_name }} {{actor.last_name}}</td>
-      <td><a href={% url 'imdb_app:actor_detail' actor.id %} class="btn btn-dark btn-outline-danger">view</a></td>
-      {% if user.is_superuser or user.is_staff or user.username == movie.author %}
-      <td><a href={% url 'imdb_app:actor_edit' actor.id %} class="btn btn-dark btn-outline-danger">edit</a></td>
-      <td><button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal">Delete</button><td>
-      {% endif %}
-    </tr>
-    <form method="post" action={% url "imdb_app:actor_delete" actor.id %}>
-      {% csrf_token %}
-      <div id=Deletemodal class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete Actor</h5>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to delete "{{ actor.first_name }} {{ actor.last_name }}"?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
-              <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+    <div class="col-sm">
+    <div class="item item{{forloop.counter}}">
+
+        <div class="object">
+          <img class="object-image" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width:214px; height:317px">
+          <div class="button-set">
+            {% if user.is_superuser or user.is_staff or user.username == actor.author.username and user.is_authenticated %}
+              <a href={% url 'imdb_app:actor_edit' actor.id %} class="edit-btn btn btn-dark btn-outline-danger">Edit</a>
+              <button type="button" class="delete-btn btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+            {% endif %}
+            <a class="title-link" href={% url 'imdb_app:actor_detail' actor.id %}>
+              <span class="title">
+                {% if actor.get_name|length > 25 %}
+                {{ actor.get_name|truncatechars:25 }}
+                {% else %}
+                {{ actor.get_name }}
+                {% endif %}
+              </span>
+            </a>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+      <form method="post" action='{% url "imdb_app:actor_delete" actor.id %}'>
+        {% csrf_token %}
+        <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete actor</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to delete "{{ actor }}"?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-    {% empty %}
-      No Actor yet
-    {% endfor %}
+      </form>
+
+  {% empty %}
+    No actors yet.
+  {% endfor %}
+</div>
+</div>
 </tbody>
 </table>
-<form method="post" action='{% url "imdb_app:actor_create" %}' enctype="multipart/form-data">
+
+<form method="post" action='{% url "imdb_app:actor_create"%}' enctype="multipart/form-data">
   {% csrf_token %}
   <div id=Createmodal class="modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Create Actor</h5>
+          <h5 class="modal-title">Create actor</h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">

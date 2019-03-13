@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -8,19 +8,19 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
 
     <!--  CSS  -->
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!--  JavaScript -->
-    <script type="text/javascript" src="/static/my_script.js"></script>
+    <script type="text/javascript" src="{% static 'my_script.js' %}"></script>
 
   </head>
 
-  <body>
+  <body background="{% static 'movies_background.jpg' %}">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container">
         <a href="{% url 'home' %}" class="navbar-brand">
-          <img src="/static/intek_logo.png" alt="logo"><b>INTEK MOVIE</b>
+          <img id="logo" src="{% static 'intek_logo.png' %}" alt="logo"><b>INTEK MOVIE</b>
         </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,18 +39,29 @@
             </ul>
             {% if user.is_authenticated %}
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'logout' %}"><b>Logout</b></a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                  {% if not user.is_superuser %}
+                    <img src="{{ user.avatar.url }}" width="45px" height="45px" style="border-radius: 50%;">
+                    <b>Hello, {{ user.first_name }}</b>
+                  {% else %}
+                    <b>Hello, handsome</b>
+                  {% endif %}
+                </a>
+                <div class="dropdown-menu navbar-light bg-dark">
+                  <a class="dropdown-item bg-dark" href="#"><b>Edit Profile</b></a>
+                  <a class="dropdown-item bg-dark" href="{% url 'logout' %}"><b>Logout</b></a>
+              </div>
               </li>
             </ul>
             {% endif %}
           </div>
         </div>
       </nav>
-      <div class="container">
-        {% block content %}
-        {% endblock %}
-      </div>
+        <div class="container page-background">
+          {% block content %}
+          {% endblock %}
+        </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
