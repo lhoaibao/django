@@ -141,7 +141,8 @@ body {
 .item {
   width: 214px;
   height: 400px;
-  margin-left: 55px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
