@@ -18,8 +18,10 @@
           <div class="card-img-overlay">
             <h1 class="card-title text-white">{{award.title}}</h1>
             <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
-            <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
-            <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+            {% if user.is_superuser or user.is_staff or user.username == actor.author.username and user.is_authenticated %}
+              <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
+              <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+            {% endif %}
             <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
               {% csrf_token %}
               <div id="Deletemodal{{forloop.counter}}" class="modal fade" role="dialog">
