@@ -60,6 +60,7 @@ class Actor(models.Model):
     )
     image = models.ImageField(upload_to='media/actors/', blank=True)
     is_alive = models.BooleanField(default=True)
+    comments = GenericRelation(Comment)
 
     class Meta:
         ordering = ["first_name"]
@@ -130,4 +131,10 @@ class Award(models.Model):
         ordering = ["date"]
 
     def __str__(self):
+        return self.title
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Award._meta.fields]
+
+    def get_name(self):
         return self.title

@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="actor">
-  <img class="actor-image" src="{{ actor.image }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
+  <img class="actor-image" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
   <div class="actor-information">
     {% for name, value in actor.get_fields %}
       {% if value and name != 'image' %}
@@ -14,4 +14,44 @@
     {% endfor %}
   </div>
 </div>
+
+<form method="post" action="{% url 'imdb_app:comment_create' actor.id %}">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="hidden" name="model" value="actor">
+  <input type="hidden" name="next" value="{{request.path}}">
+  <button type="submit" name="button">Submit</button>
+</form>
+
+{% for comment in comments %}
+<h1>{{comment}}</h1>
+{% if user.is_superuser or user.is_staff or user.username == actor.author.username and user.is_authenticated %}
+  <a href={% url 'imdb_app:comment_edit' comment.id %} class="edit-btn btn btn-dark btn-outline-danger">Edit</a>
+  <button type="button" class="delete-btn btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+
+  <form method="post" action='{% url "imdb_app:comment_delete" comment.id %}'>
+    {% csrf_token %}
+    <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Comment</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete "{{ comment }}"?</p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="model" value="actor">
+            <input type="hidden" name="next" value="{{request.path}}">
+            <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+            <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endif %}
+{% endfor %}
+
 {% endblock %}

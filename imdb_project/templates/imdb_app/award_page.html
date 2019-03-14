@@ -1,29 +1,91 @@
 {% extends 'base.html' %}
 
-{% block title %}Movie{% endblock %}
+{% block title %}Movie{% endblock %}\
 
 {% block content %}
-<h1 class="title">
-  <b>Movie</b>
-  <span id="add-button">
-    <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
-  </span>
-</h1>
-<hr>
-{% for award in award_list %}
-  {% if award.kind == 'Movie' %}
-    {{ award }}
-  {% endif %}
-{% endfor %}
-<h1 class="title">
-  <b>Actor</b>
-</h1>
-<hr>
-{% for award in award_list %}
-  {% if award.kind == 'Actor' %}
-    {{ award }}
-  {% endif %}
-{% endfor %}
+<!-- Page Content -->
+<div class="container">
+
+  <!-- Page Heading -->
+  <h1 class="my-4">Movie Award</h1>
+  <div class="row" style="position:relative">
+    {% for award in award_list %}
+      {% if award.kind == "Movie"%}
+        <div class="col-lg-6 mb-4">
+          <div class="card bg-dark">
+            <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
+            <div class="card-img-overlay">
+              <h1 class="card-title">{{award.title}}</h1>
+              <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
+              <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+              <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
+                {% csrf_token %}
+                <div id="Deletemodal{{forloop.counter}}" class="modal fade" role="dialog">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Award</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete "{{ award }}"?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                        <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
+  </div>
+  <hr>
+  <h1 class="my-4">Actor Award</h1>
+  <div class="row" style="position:relative">
+    {% for award in award_list %}
+      {% if award.kind == "Actor"%}
+        <div class="col-lg-6 mb-4">
+          <div class="card bg-dark">
+            <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
+            <div class="card-img-overlay">
+              <h1 class="card-title">{{award.title}}</h1>
+              <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
+              <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+              <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
+                {% csrf_token %}
+                <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Award</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete "{{ award }}"?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                        <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
+  </div>
+</div>
+
 
 <form class="award-create-form" action="{% url 'imdb_app:award_create' %}" method="post" enctype="multipart/form-data">
   {% csrf_token %}
@@ -36,14 +98,13 @@
         </div>
         <div class="modal-body">
           {{ form.as_p }}
-          <label for="id_selected" id="label_id_selected">Movie:</label>
-          <select id='id_selected' name='selected' required>
-            {% for movie in movie_list %}
-              <option value="{{movie.id}}">
-                {{ movie }}
-              </option>
-            {% endfor %}
-          </select>
+          <label for="id_selected" id="label_id_selected"></label>
+          <select id='id_selected' name='selected' required></select>
+          <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+              showData();
+            });
+          </script>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-dark btn-outline-danger">Submit</button>

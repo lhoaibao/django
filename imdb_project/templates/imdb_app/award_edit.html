@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ award }}{% endblock %}
+
+{% block content %}
+<form class="award-edit-form" method="post">
+  {% csrf_token %}
+    {{ form.as_p }}
+    <label for="id_selected" id="label_id_selected"></label>
+    <select id='id_selected' name='selected' required></select>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+        showData();
+      });
+    </script>
+    <button type="submit" class="btn btn-dark btn-outline-danger">Submit</button>
+</form>
+
+<script type="text/javascript">
+  var movieList = [{% for movie in movie_list %}["{{ movie.id }}", "{{ movie }}"], {% endfor %}]
+  var actorList = [{% for actor in actor_list %}["{{ actor.id }}", "{{ actor }}"], {% endfor %}]
+</script>
+{% endblock %}

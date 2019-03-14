@@ -14,8 +14,7 @@
     <div class="row">
     {% for movie in movie_list %}
     <div class="col-sm">
-    <div class="item item{{forloop.counter}}">
-
+      <div class="item item{{forloop.counter}}">
         <div class="object">
           <img class="object-image" src="{{ movie.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width:214px; height:317px">
           <div class="button-set">
@@ -35,10 +34,7 @@
               </span>
             </a>
           </div>
-
         </div>
-
-
       </div>
     </div>
 

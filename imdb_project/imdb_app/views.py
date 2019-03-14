@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.urls import reverse_lazy
-from .models import Movie, Actor, Award
+from .models import Movie, Actor, Award, Comment
 from .forms import PostMovieForm, PostActorForm, PostAwardForm, SignUpForm, PostCommentForm
 from django.contrib.contenttypes.models import ContentType
 
@@ -35,8 +35,6 @@ class MovieCreateView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        with open('test.txt', 'w+') as f:
-            f.write(str(self.request.__dict__))
         return super(MovieCreateView, self).form_valid(form)
 
 
@@ -45,6 +43,7 @@ class MovieDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         movie = Movie.objects.get(pk=self.kwargs['pk'])
+        kwargs['actors'] = movie.actors.all()
         kwargs['comments'] = movie.comments.all()
         kwargs['form'] = PostCommentForm()
         return super(MovieDetailView, self).get_context_data(**kwargs)
@@ -89,6 +88,12 @@ class ActorCreateView(generic.CreateView):
 class ActorDetailView(generic.DetailView):
     model = Actor
 
+    def get_context_data(self, **kwargs):
+        actor = Actor.objects.get(pk=self.kwargs['pk'])
+        kwargs['comments'] = actor.comments.all()
+        kwargs['form'] = PostCommentForm()
+        return super(ActorDetailView, self).get_context_data(**kwargs)
+
 
 class ActorEditView(generic.UpdateView):
     form_class = PostActorForm
@@ -129,6 +134,31 @@ class AwardCreateView(generic.CreateView):
         form.instance.content_type_id = ContentType.objects.get(model=model).id
         return super(AwardCreateView, self).form_valid(form)
 
+
+class AwardEditView(generic.UpdateView):
+    form_class = PostAwardForm
+    queryset = Award.objects.all()
+    template_name = 'imdb_app/award_edit.html'
+    success_url = reverse_lazy('imdb_app:award')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.object_id = self.request._post['selected']
+        model = self.request._post['kind'].lower()
+        form.instance.content_type_id = ContentType.objects.get(model=model).id
+        return super(AwardEditView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        kwargs['movie_list'] = Movie.objects.all()
+        kwargs['actor_list'] = Actor.objects.all()
+        return super(AwardEditView, self).get_context_data(**kwargs)
+
+
+class AwardDeleteView(generic.DeleteView):
+    queryset = Award.objects.all()
+    success_url = reverse_lazy('imdb_app:award')
+
+
 class CommentCreateView(generic.CreateView):
     form_class = PostCommentForm
 
@@ -142,3 +172,21 @@ class CommentCreateView(generic.CreateView):
         form.instance.content_type_id = ContentType.objects.get(model=self.request._post['model']).id
 
         return super(CommentCreateView, self).form_valid(form)
+
+
+class CommentEditView(generic.UpdateView):
+    form_class = PostCommentForm
+    queryset = Comment.objects.all()
+    template_name = 'imdb_app/edit.html'
+
+    def get_success_url(self):
+        redirect_to=self.request._post['next']
+        return redirect_to
+
+
+class CommentDeleteView(generic.DeleteView):
+    queryset = Comment.objects.all()
+
+    def get_success_url(self):
+        redirect_to=self.request._post['next']
+        return redirect_to

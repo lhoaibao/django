@@ -3,30 +3,36 @@
 {% block title %}{{ movie }}{% endblock %}
 
 {% block content %}
-<div class="movie-detail">
-  <img class="movie-image" src="{{ movie.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
-  <div class="movie-information">
-    {% for name, value in movie.get_fields %}
-      {% if value and name != 'image' %}
-        <li>{{ name }}: {{ value }}</li>
-      {% endif %}
-    {% endfor %}
+<div class="container">
 
-    {% for name in movie.actors.all %}
-      {{ name.get_name }}
-    {%endfor%}
+  <!-- Portfolio Item Heading -->
+  <h1 class="my-4">{{movie.title}}
+    <small>({{ movie.release_date|date:"Y" }})</small>
+  </h1>
+  <!-- Portfolio Item Row -->
+  <div class="row">
+
+    <div class="col-md-8">
+      <img class="img-fluid" src="{{ movie.image.url }}" alt="movie" style="height:650px;width:auto;justify-items:center">
+    </div>
+
+    <div class="col-md-4">
+      <h3 class="my-3">Movie Description</h3>
+      <p>{{movie.description}}</p>
+      <h3 class="my-3">Movie Details</h3>
+      <ul>
+        <li>Release Date: {{movie.release_date}}</li>
+        <li>
+          Actors:
+          {% for actor in actors %}
+            {{actor.get_name}}
+          {% endfor %}
+        </li>
+        <li>Consectetur</li>
+        <li>Adipiscing Elit</li>
+      </ul>
+    </div>
 
   </div>
 </div>
-<form method="post" action="{% url 'imdb_app:comment_create' movie.id %}">
-  {% csrf_token %}
-  {{form.as_p}}
-  <input type="hidden" name="model" value="movie">
-  <input type="hidden" name="next" value="{{request.path}}">
-  <button type="submit" name="button">Submit</button>
-</form>
-{% for comment in comments %}
-<h1>{{comment}}</h1>
-{% endfor %}
-
 {% endblock %}
