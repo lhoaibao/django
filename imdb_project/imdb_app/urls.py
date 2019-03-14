@@ -26,6 +26,7 @@ urlpatterns = [
     # Award
     path('award/create', login_required(views.AwardCreateView.as_view()), name='award_create'),
     path('award/', login_required(views.AwardListView.as_view()), name='award'),
+    path('award/<int:pk>', login_required(views.AwardDetailView.as_view()), name='award_detail'),
     path('award/<int:pk>/update', login_required(views.AwardEditView.as_view()), name='award_edit'),
     path('award/<int:pk>/delete', login_required(views.AwardDeleteView.as_view()), name='award_delete'),
 

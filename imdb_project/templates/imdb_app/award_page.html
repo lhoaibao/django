@@ -7,7 +7,12 @@
 <div class="container">
 
   <!-- Page Heading -->
-  <h1 class="my-4">Movie Award</h1>
+  <h1 class="my-4">
+    <b>Movie Award</b>
+    <span id="add-button">
+      <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Createmodal">Create</button>
+    </span>
+  </h1>
   <div class="row" style="position:relative">
     {% for award in award_list %}
       {% if award.kind == "Movie"%}
@@ -16,6 +21,7 @@
             <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
             <div class="card-img-overlay">
               <h1 class="card-title">{{award.title}}</h1>
+              <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
               <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
               <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
               <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
@@ -41,12 +47,17 @@
             </div>
           </div>
         </div>
+        <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
       {% endif %}
+      {% empty %}
+        No award yet
     {% endfor %}
-    <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
   </div>
   <hr>
-  <h1 class="my-4">Actor Award</h1>
+
+  <h1 class="my-4">
+    <b>Movie Award</b>
+  </h1>
   <div class="row" style="position:relative">
     {% for award in award_list %}
       {% if award.kind == "Actor"%}
@@ -55,6 +66,7 @@
             <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
             <div class="card-img-overlay">
               <h1 class="card-title">{{award.title}}</h1>
+              <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
               <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
               <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
               <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
@@ -80,9 +92,9 @@
             </div>
           </div>
         </div>
+        <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
       {% endif %}
     {% endfor %}
-    <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
   </div>
 </div>
 

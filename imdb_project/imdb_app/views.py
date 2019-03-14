@@ -134,6 +134,16 @@ class AwardCreateView(generic.CreateView):
         return super(AwardCreateView, self).form_valid(form)
 
 
+class AwardDetailView(generic.DetailView):
+    model = Award
+
+    def get_context_data(self, **kwargs):
+        award = Award.objects.get(pk=self.kwargs['pk'])
+        kwargs['comments'] = award.comments.all()
+        kwargs['form'] = PostCommentForm()
+        return super(AwardDetailView, self).get_context_data(**kwargs)
+
+
 class AwardEditView(generic.UpdateView):
     form_class = PostAwardForm
     queryset = Award.objects.all()
