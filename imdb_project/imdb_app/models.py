@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to='media/avatars/', blank=True)
+    avatar = models.ImageField(upload_to='media/avatars/', blank=False)
 
 
 class Comment(models.Model):

@@ -7,9 +7,9 @@
   <div class="object-information">
     <div class="row">
     <div class="col-md-6">
-      <img class="img-fluid" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: auto; height:350px; margin: 0 auto; display: block;">
+      <img class="actor-img img-fluid" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'">
     </div>
-    <div class="col-md-5" style="">
+    <div class="description col-md-5">
       <h3 class="my-3">{{ actor.get_name }}</h3>
       <hr>
       <ul>

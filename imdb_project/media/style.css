@@ -7,12 +7,14 @@ body {
 
 
 /* Set background color of container to white */
+/* base.html */
 .page-background {
   background-color: white;
 }
 
 
 /* Resize navigation bar logo */
+/* base.html */
 #logo {
   height: 40px;
   weight: 40px;
@@ -20,6 +22,7 @@ body {
 
 
 /* Change text next to logo */
+/* base.html */
 .navbar-brand b {
   font-size: 15px;
   color: #fff;
@@ -28,12 +31,14 @@ body {
 
 
 /* Resize user dropdown menu */
+/* base.html */
 .dropdown-menu b {
   font-size: 15px;
 }
 
 
 /* Change color user dropdown menu */
+/* base.html */
 .dropdown-menu b,
 .nav-link b {
   color: #abb7c4;
@@ -41,12 +46,14 @@ body {
 
 
 /* Change text color when hover to text in navigation bar */
+/* base.html */
 .dropdown-item:hover b,
 .nav-link:hover b {
   color: rgb(220, 248, 54);
 }
 
 
+/* login.html */
 @import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
 .login-block{
     background: #DE6262;  /* fallback for old browsers */
@@ -71,6 +78,22 @@ body {
 .banner-text p{color:#fff;}
 
 
+/* Change color of error input */
+/* signup.html */
+.form-horizontal .error-input {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+
+/* Adjust the register button */
+/* signup.html */
+.form-horizontal .btn {
+  margin: 20px 0;
+}
+
+
 /* Shift create button to the right of container */
 /* movie_page.html, actor_page.html, award_page.html */
 #add-button {
@@ -92,7 +115,6 @@ body {
   width: 214px;
   height: 317px;
 }
-
 
 /* Adjust position of edit and delete button parent div */
 /* Hide the button-set */
@@ -199,6 +221,30 @@ body {
 .object-detail .object-information small,
 .object-detail .object-information small a {
   color: grey;
+}
+
+
+/* Adjust object poster position */
+/* movie_detail.html, actor_detail.html */
+.object-detail .img-fluid {
+  width: auto;
+  height:350px;
+  margin: 0 auto;
+  display: block;
+}
+
+
+/* Adjust the actor image */
+/* actor_detail.html */
+.object-detail .actor-img {
+  margin-top: 25px;
+}
+
+
+/* Adjust the description of object */
+/* movie_detail.html, actor_detail.html */
+.description {
+  margin-top: 40px;
 }
 
 
