@@ -17,7 +17,7 @@
     <div class="item item{{forloop.counter}}">
 
         <div class="object">
-          <img class="object-image" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width:214px; height:317px">
+          <img class="object-image" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'">
           <div class="button-set">
             {% if user.is_superuser or user.is_staff or user.username == actor.author.username and user.is_authenticated %}
               <a href={% url 'imdb_app:actor_edit' actor.id %} class="edit-btn btn btn-dark btn-outline-danger">Edit</a>

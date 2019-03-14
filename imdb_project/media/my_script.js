@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 });
 
+
 function showData() {
   var selectedMaterial = document.querySelector("#id_kind").value;
   if (selectedMaterial == 'Movie') {
@@ -19,12 +20,14 @@ function showData() {
   };
 };
 
+
 function getSelectTag(form, id_name) {
   var awardCreateForm = document.querySelector(form);
   var selectList = document.querySelector(id_name);
   selectList.innerHTML = "";
   return selectList
 };
+
 
 function createSelection(objects, form, select_id) {
   var selectList = getSelectTag(form, select_id)
@@ -36,6 +39,18 @@ function createSelection(objects, form, select_id) {
     selectList.appendChild(option);
   }
 };
+
+
+function updateComment(returnUrl, id) {
+  var commentForm = document.querySelector(".comment_form");
+  var currentComment = document.querySelector("#comment-text" + id);
+  var cloneCommentForm = commentForm.cloneNode(true);
+  cloneCommentForm.querySelector('.form-control').value += currentComment.querySelector("p").innerText;
+  cloneCommentForm.action = returnUrl;
+  currentComment.innerHTML = "";
+  currentComment.appendChild(cloneCommentForm);
+};
+
 
 function redirectHome() {
   var current_site = window.location.origin;

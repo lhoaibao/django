@@ -19,6 +19,9 @@ class Comment(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
+    class Meta:
+        ordering = ['-create']
+
     def __str__(self):
         return self.comment_text
 

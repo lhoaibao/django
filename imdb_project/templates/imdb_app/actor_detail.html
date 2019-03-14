@@ -1,57 +1,113 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ actor }}{% endblock %}
+{% block title %}{{ actor.get_name }}{% endblock %}
 
 {% block content %}
-
-<div class="actor">
-  <img class="actor-image" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: 214px; height: 317px;">
-  <div class="actor-information">
-    {% for name, value in actor.get_fields %}
-      {% if value and name != 'image' %}
-        <li>{{ name }}: {{ value }}</li>
-      {% endif %}
-    {% endfor %}
+<div class="object-detail">
+  <div class="object-information">
+    <div class="row">
+    <div class="col-md-6">
+      <img class="img-fluid" src="{{ actor.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: auto; height:350px; margin: 0 auto; display: block;">
+    </div>
+    <div class="col-md-5" style="">
+      <h3 class="my-3">{{ actor.get_name }}</h3>
+      <hr>
+      <ul>
+        <li>Nationality: {{ actor.nationality }}</li>
+        <li>Gender: {{ actor.sex }}</li>
+        <li>Born: {{ actor.birthdate|date:"M d, Y" }}</li>
+        {% if actor.is_alive %}
+          <li>Alive</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
   </div>
 </div>
 
-<form method="post" action="{% url 'imdb_app:comment_create' actor.id %}">
-  {% csrf_token %}
-  {{form.as_p}}
-  <input type="hidden" name="model" value="actor">
-  <input type="hidden" name="next" value="{{request.path}}">
-  <button type="submit" name="button">Submit</button>
-</form>
+<!-- Create box for Comment -->
+<div class="row bootstrap snippets">
+    <div class="col-lg">
+        <div class="comment-wrapper">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Comments
+                </div>
+                <div class="panel-body">
+                  <form class="comment_form" method="post" action="{% url 'imdb_app:comment_create' actor.id %}">{% csrf_token %}
+                    <label for="id_comment_text"></label>
+                    <textarea name="comment_text" class="form-control" rows="3" id="id_comment_text" required cols="40"></textarea>
+                    <input type="hidden" name="model" value="actor">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <br>
+                    <button type="submit" class="post-button btn btn-info" >Post</button>
+                  </form>
+                    <br>
+                    <hr>
+                    <ul class="media-list">
+                      <!-- Print all comments -->
+                      {% for comment in comments %}
+                        <li class="media">
+                            <a href="#" class="pull-left">
+                              {% if  comment.author.is_superuser %}
+                                <img src="/static/anonymous.jpg" class="img-circle">
+                              {% else %}
+                                <img src="{{ comment.author.avatar.url }}" class="img-circle">
+                              {% endif %}
+                            </a>
+                            <div class="media-body">
+                              <strong class="text-success">@{{ comment.author.username }}</strong>
+                                <span class="text-muted">
+                                  <small class="text-muted">{{ comment.update|timesince }} ago</small>
+                                  {% if user.username == comment.author.username and user.is_authenticated %}
+                                    <div class="dropdown">
+                                      <a href="#" class="text-muted" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                      </a>
+                                      <!-- Give '...' drop down menu with delete and edit option -->
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" onclick="updateComment('{% url 'imdb_app:comment_edit' comment.id %}','{{ comment.id }}');">Edit</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Deletemodal{{ forloop.counter }}">Delete</a>
+                                      </div>
+                                    </div>
+                                  {% endif %}
 
-{% for comment in comments %}
-<h1>{{comment}}</h1>
-{% if user.is_superuser or user.is_staff or user.username == actor.author.username and user.is_authenticated %}
-  <a href={% url 'imdb_app:comment_edit' comment.id %} class="edit-btn btn btn-dark btn-outline-danger">Edit</a>
-  <button type="button" class="delete-btn btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
 
-  <form method="post" action='{% url "imdb_app:comment_delete" comment.id %}'>
-    {% csrf_token %}
-    <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Delete Comment</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete "{{ comment }}"?</p>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="model" value="actor">
-            <input type="hidden" name="next" value="{{request.path}}">
-            <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
-            <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-{% endif %}
-{% endfor %}
+                                    <form method="post" action='{% url "imdb_app:comment_delete" comment.id %}'>
+                                      {% csrf_token %}
+                                      <div id=Deletemodal{{forloop.counter}} class="modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title">Delete Movie</h5>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <p>Are you sure you want to delete "{{ movie }}"?</p>
+                                              <input type="hidden" name="next" value="{{ request.path }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                                              <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </span>
+                                <div id="comment-text{{ comment.id }}">
+                                  <p>
+                                    {{ comment.comment_text }}
+                                  </p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 {% endblock %}

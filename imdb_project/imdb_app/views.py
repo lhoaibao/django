@@ -43,7 +43,6 @@ class MovieDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         movie = Movie.objects.get(pk=self.kwargs['pk'])
-        kwargs['actors'] = movie.actors.all()
         kwargs['comments'] = movie.comments.all()
         kwargs['form'] = PostCommentForm()
         return super(MovieDetailView, self).get_context_data(**kwargs)
@@ -170,17 +169,15 @@ class CommentCreateView(generic.CreateView):
         form.instance.author = self.request.user
         form.instance.object_id = self.request.resolver_match.kwargs['pk']
         form.instance.content_type_id = ContentType.objects.get(model=self.request._post['model']).id
-
         return super(CommentCreateView, self).form_valid(form)
 
 
 class CommentEditView(generic.UpdateView):
     form_class = PostCommentForm
     queryset = Comment.objects.all()
-    template_name = 'imdb_app/edit.html'
 
     def get_success_url(self):
-        redirect_to=self.request._post['next']
+        redirect_to = self.request._post['next']
         return redirect_to
 
 
