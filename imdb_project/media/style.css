@@ -308,3 +308,37 @@ body {
 .page-navigator {
   text-align: center;
 }
+
+
+/* home.html */
+.home-page {
+  padding: 380px 0;
+  text-align: center;
+  font-family: 'Source Code Pro', monospace;
+  background-image: url(https://cafart.r.worldssl.net/images/Category_77317/subcat_121652/AvengersCovers.JPG);
+  background-size: cover;
+}
+
+
+/* home.html */
+.home-page-title {
+  width: 75%;
+  height: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(255, 254, 239, 0.8);
+  background-blend-mode: screen;
+}
+
+
+/* footer */
+/* base.html */
+footer {
+   text-align: center;
+   color: #fff;
+   background-color: #343a40;
+   font-family: 'Source Code Pro', monospace;
+   padding: 5px 0;
+}
