@@ -17,7 +17,7 @@
     {% for award in award_list %}
       {% if award.kind == "Movie"%}
         <div class="col-lg-6 mb-4">
-          <div class="card bg-dark">
+          <div class="card bg-dark text-white">
             <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
             <div class="card-img-overlay">
               <h1 class="card-title">{{award.title}}</h1>
@@ -62,8 +62,8 @@
     {% for award in award_list %}
       {% if award.kind == "Actor"%}
         <div class="col-lg-6 mb-4">
-          <div class="card bg-dark">
-            <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
+          <div class="card bg-dark text-white">
+            <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
             <div class="card-img-overlay">
               <h1 class="card-title">{{award.title}}</h1>
               <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>

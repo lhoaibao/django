@@ -10,9 +10,11 @@
       <img class="img-fluid" src="{{ award.image.url }}" onerror="this.src='/static/anonymous.jpg'" style="width: auto; height:350px; margin: 0 auto; display: block;">
     </div>
     <div class="col-md-5" style="">
-      <h3 class="my-3">{{ award.title }}</h3>
+      <h1 class="my-3">{{ award.title }}</h1>
       <hr>
       <ul>
+        <h2>Movie winner</h2>
+        <li>{{award.selected}}</li>
       </ul>
     </div>
   </div>
