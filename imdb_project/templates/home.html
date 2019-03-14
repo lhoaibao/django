@@ -3,12 +3,8 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-Home
-{% else %}
-  <div class="base">
-    <p>You're not logged in</p>
-    <a href="{% url 'login' %}">login</a><br>
-  </div>
-{% endif %}
+
+<h1>WELCOME TO INTEK IMDB</h1>
+<h2>The best review website of your own!!</h2>
+
 {% endblock %}

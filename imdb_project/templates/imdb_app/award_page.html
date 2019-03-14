@@ -18,7 +18,7 @@
       {% if award.kind == "Movie"%}
         <div class="col-lg-6 mb-4">
           <div class="card bg-dark">
-            <img class="card-img" src="http://placehold.it/700x400" alt="Card image">
+            <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
             <div class="card-img-overlay">
               <h1 class="card-title">{{award.title}}</h1>
               <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
@@ -109,7 +109,17 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          {{ form.as_p }}
+          {% for field in form %}
+              <div class="control-group">
+                  <strong>{{ field.label_tag }}</strong>
+                  <div class="controls">
+                    {{ field }}
+                    <span class="error-input">
+                      {{ field.errors }}
+                    </span>
+                  </div>
+              </div>
+          {% endfor %}
           <label for="id_selected" id="label_id_selected"></label>
           <select id='id_selected' name='selected' required></select>
           <script type="text/javascript">

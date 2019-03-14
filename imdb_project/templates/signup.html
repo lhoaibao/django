@@ -3,10 +3,29 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
+<form class="form-horizontal" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset>
+    <div id="legend">
+      <legend class="">Register</legend>
+    </div>
+    {% for field in form %}
+        <div class="control-group">
+            <strong>{{ field.label_tag }}</strong>
+            <div class="controls">
+              {{ field }}
+              <span class="error-input">
+                {{ field.errors }}
+              </span>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button type="submit" class="btn btn-success">Register</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
 {% endblock %}
