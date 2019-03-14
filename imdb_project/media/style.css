@@ -331,14 +331,3 @@ body {
   background-color: rgba(255, 254, 239, 0.8);
   background-blend-mode: screen;
 }
-
-
-/* footer */
-/* base.html */
-footer {
-   text-align: center;
-   color: #fff;
-   background-color: #343a40;
-   font-family: 'Source Code Pro', monospace;
-   padding: 5px 0;
-}
