@@ -25,6 +25,43 @@ class Comment(models.Model):
     def __str__(self):
         return self.comment_text
 
+
+'---------------------------model award--------------------------'
+
+
+class Award(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    kind_choices = [
+        ('Movie', 'Movie'),
+        ('Actor', 'Actor')
+    ]
+
+    date = models.DateField(blank=False)
+    title = models.CharField(max_length=200, blank=False)
+    kind = models.CharField(
+        max_length=10,
+        choices=kind_choices,
+        default='Movie',
+        blank=False
+    )
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    selected = GenericForeignKey('content_type', 'object_id')
+    comments = GenericRelation(Comment)
+
+    class Meta:
+        ordering = ["-date"]
+
+    def __str__(self):
+        return self.title
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Award._meta.fields]
+
+    def get_name(self):
+        return self.title
+
+
 '------------------model Category------------------------'
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -64,6 +101,7 @@ class Actor(models.Model):
     image = models.ImageField(upload_to='media/actors/', blank=True)
     is_alive = models.BooleanField(default=True)
     comments = GenericRelation(Comment)
+    award = GenericRelation(Award)
 
     class Meta:
         ordering = ["first_name"]
@@ -94,6 +132,7 @@ class Movie(models.Model):
         blank=True,
     )
     comments = GenericRelation(Comment)
+    award = GenericRelation(Award)
 
     class Meta:
         ordering = ["-id"]
@@ -103,41 +142,6 @@ class Movie(models.Model):
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Movie._meta.fields]
-
-    def get_name(self):
-        return self.title
-
-'---------------------------model award--------------------------'
-
-
-class Award(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    kind_choices = [
-        ('Movie', 'Movie'),
-        ('Actor', 'Actor')
-    ]
-
-    date = models.DateField(blank=False)
-    title = models.CharField(max_length=200, blank=False)
-    kind = models.CharField(
-        max_length=10,
-        choices=kind_choices,
-        default='Movie',
-        blank=False
-    )
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    selected = GenericForeignKey('content_type', 'object_id')
-    comments = GenericRelation(Comment)
-
-    class Meta:
-        ordering = ["date"]
-
-    def __str__(self):
-        return self.title
-
-    def get_fields(self):
-        return [(field.name, field.value_to_string(self)) for field in Award._meta.fields]
 
     def get_name(self):
         return self.title

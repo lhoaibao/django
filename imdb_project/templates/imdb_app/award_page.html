@@ -14,13 +14,13 @@
     </span>
   </h1>
   <div class="row" style="position:relative">
-    {% for award in award_list %}
+    {% for award in movie_award_list|slice:":4" %}
       {% if award.kind == "Movie"%}
         <div class="col-lg-6 mb-4">
-          <div class="card bg-dark text-white">
+          <div class="card bg-dark">
             <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
             <div class="card-img-overlay">
-              <h1 class="card-title">{{award.title}}</h1>
+              <h1 class="card-title text-white">{{award.title}}</h1>
               <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
               <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
               <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
@@ -47,25 +47,27 @@
             </div>
           </div>
         </div>
-        <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
       {% endif %}
       {% empty %}
         No award yet
     {% endfor %}
+    {% if movie_award_list|length > 4%}
+      <a href={% url 'imdb_app:award_movie_list'%}  style="position:absolute; bottom:0px; right:0px;">Read more...</a>
+    {% endif %}
   </div>
   <hr>
 
   <h1 class="my-4">
-    <b>Movie Award</b>
+    <b>Actor Award</b>
   </h1>
   <div class="row" style="position:relative">
-    {% for award in award_list %}
+    {% for award in actor_award_list|slice:":4" %}
       {% if award.kind == "Actor"%}
         <div class="col-lg-6 mb-4">
-          <div class="card bg-dark text-white">
+          <div class="card bg-dark">
             <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
             <div class="card-img-overlay">
-              <h1 class="card-title">{{award.title}}</h1>
+              <h1 class="card-title text-white">{{award.title}}</h1>
               <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
               <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
               <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
@@ -92,7 +94,9 @@
             </div>
           </div>
         </div>
-        <a href="#" style="position:absolute; bottom:0px; right:0px;">Read more...</a>
+        {% if actor_award_list|length > 4%}
+          <a href={% url 'imdb_app:award_actor_list'%} style="position:absolute; bottom:0px; right:0px;">Read more...</a>
+        {% endif %}
       {% endif %}
     {% endfor %}
   </div>

@@ -113,13 +113,36 @@ class AwardListView(generic.ListView):
     model = Award
     context_object_name = 'award_list'
     template_name = 'imdb_app/award_page.html'
-    paginate_by = 12
 
     def get_context_data(self, **kwargs):
         kwargs['form'] = PostAwardForm()
         kwargs['movie_list'] = Movie.objects.all()
         kwargs['actor_list'] = Actor.objects.all()
+        kwargs['movie_award_list'] = Award.objects.filter(kind='Movie')
+        kwargs['actor_award_list'] = Award.objects.filter(kind='Actor')
         return super(AwardListView, self).get_context_data(**kwargs)
+
+
+class AwardMovieListView(generic.ListView):
+    model = Award
+    template_name = 'imdb_app/award_list.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['title'] = 'Movie Award'
+        kwargs['form'] = PostAwardForm()
+        kwargs['data'] = Award.objects.filter(kind='Movie')
+        return super(AwardMovieListView, self).get_context_data(**kwargs)
+
+
+class AwardActorListView(generic.ListView):
+    model = Award
+    template_name = 'imdb_app/award_list.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['title'] = 'Actor Award'
+        kwargs['form'] = PostAwardForm()
+        kwargs['data'] = Award.objects.filter(kind='Actor')
+        return super(AwardActorListView, self).get_context_data(**kwargs)
 
 
 class AwardCreateView(generic.CreateView):

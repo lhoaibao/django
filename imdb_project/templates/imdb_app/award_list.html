@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Movie{% endblock %}\
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+
+  <!-- Page Heading -->
+  <h1 class="my-4">
+    <b>{{title}}</b>
+  </h1>
+  <div class="row" style="position:relative">
+    {% for award in data %}
+      <div class="col-lg-6 mb-4">
+        <div class="card bg-dark">
+          <img class="card-img" src="https://www.everywoman.com/sites/default/files/decorative-star-with-lamps-on-a-background-of-wall-modern-grungy-picture-id873928690.jpg" alt="Card image">
+          <div class="card-img-overlay">
+            <h1 class="card-title text-white">{{award.title}}</h1>
+            <a href={% url 'imdb_app:award_detail' award.id %} class="btn btn-dark btn-outline-danger">view</a>
+            <a href={% url 'imdb_app:award_edit' award.id %} class="btn btn-dark btn-outline-danger">edit</a>
+            <button type="button" class="btn btn-dark btn-outline-danger" data-toggle="modal" data-target="#Deletemodal{{forloop.counter}}">Delete</button>
+            <form method="post" action="{% url 'imdb_app:award_delete' award.id %}">
+              {% csrf_token %}
+              <div id="Deletemodal{{forloop.counter}}" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Delete Award</h5>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to delete "{{ award }}"?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-dark btn-outline-danger">Yes</button>
+                      <button type="button" class="btn btn-dark btn-outline-danger" data-dismiss="modal">No</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      No award yet
+  {% endfor %}
+</div>
+<hr>
+<script type="text/javascript">
+  var movieList = [{% for movie in movie_list %}["{{ movie.id }}", "{{ movie }}"], {% endfor %}]
+  var actorList = [{% for actor in actor_list %}["{{ actor.id }}", "{{ actor }}"], {% endfor %}]
+</script>
+{% endblock %}
